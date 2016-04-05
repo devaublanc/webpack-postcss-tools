@@ -91,7 +91,7 @@ function makeVarMap(filename) {
     // extracting values (depth-first, post-order traversal), files that import
     // libraries can re-define variable declarations, which more-closely
     // matches the browser's behavior
-    style.root.eachAtRule(function (atRule) {
+    style.root.walkAtRules(function (atRule) {
       if (atRule.name !== 'import')
         return;
 
@@ -104,7 +104,7 @@ function makeVarMap(filename) {
     style.root.eachRule(processRules);
 
     // extract custom definitions
-    style.root.eachAtRule(processAtRuleCustom);
+    style.root.walkAtRules(processAtRuleCustom);
   }
 
   process(pathResolve(filename));
@@ -126,7 +126,7 @@ function unwrapUrl(params) {
  * [url-to-req]: https://github.com/webpack/css-loader/blob/7b50d4f569adcaf5bf185180c15435bde03f4de7/index.js#L37
  */
 function prependTildesToImports(styles) {
-  styles.eachAtRule(function (atRule) {
+  styles.walkAtRules(function (atRule) {
     if (atRule.name !== 'import')
       return;
 
